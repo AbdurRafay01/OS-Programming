@@ -10,7 +10,7 @@ for i in range(len(list2)):
         print(prev_value[needval] , i)
     prev_value[num] = i
 
-
+#just checking git from atom
 def twoSumHashing(num_arr, pair_sum):
 
     hashTable = {}
