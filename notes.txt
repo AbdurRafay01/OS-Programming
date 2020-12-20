@@ -1,0 +1,86 @@
+sjf mein aesi denge
+[['P1', 8, 0], ['P2', 4, 1], ['P3', 9, 2], ['P4', 5, 3]]
+ani aese chahye:
+[['P1', 8, 0], ['P2', 4, 1], ['P4', 5, 3], ['P3', 9, 2]]
+
+['P1', 8, 0]
+['P2', 4, 1]
+['P3', 9, 2]
+['P4', 5, 3]
+
+def sort_SJF_pe(self, array):
+        """Sorts according to the SJF preemptive algorithm
+        
+
+        sjf mein aesi denge
+        [['P1', 8, 0], ['P2', 4, 1], ['P3', 9, 2], ['P4', 5, 3]]
+        ani aese chahye:
+        [ ['P2', 4, 1], ['P4', 5, 3], ['P1', 8, 0], ['P3', 9, 2]]
+
+        Returns:
+            [list]: [A nested list of which contains processes, burst times and arrival time]
+        """
+        time = 0
+        access_arr = []
+        seq_of_processes = []
+
+        ### items ko rediqueue mein daldo
+        queue = rediqueue()
+        
+        for items in array:
+            queue.enqueue(items)
+
+
+        max_arrival_t = max(queue.array , key=lambda x: x[2])[2]
+
+        # for i in range(max_arrival_t + 1):
+        while len(queue.array) != 0:
+            items = queue.deqeueue() # items of array; item aesa hoga ['P4', 5 (bt), 3 (at)]
+            p_arrival_t = items[2] # process ka arrival time
+
+            # agr time aur arrival time == tu kahani 1 chalegi
+            # print(9999, items, time)
+            if p_arrival_t <= time:
+
+                """kahani 1"""
+                burst_time = items[1] # bt ka flag
+                #time += burst_time # burst time bhi time mein add karadya---yeh sahi nhi hai
+                
+                while burst_time >= 0: # burst time ki condition lagegi
+
+                    first_item = queue.array[0]# next item tu 0 index pe hoga hamesha
+                    burst_time_of_next = first_item[1] # next item tu 0 index pe hoga hamesha
+                    if burst_time_of_next < burst_time: # next wale ka burst time kaam ho agr
+                        queue.enqueue(items) # current item ko wapis daldya, aur uska burst time jitna kam woh bhi
+                        break
+                    else:
+                        print(items)
+                        time += 1 # ye sahi hai
+                        burst_time -= 1# reducing burst time of process
+                        items[1] = burst_time # reducing the burst time
+            else:
+                queue.enqueue(items) # bt zyada tha islye wapis daldya
+            time += 1
+            print('---',time, queue.array)
+            # print('---')
+
+
+# arrival_time = 0
+# for i in range(len(array)):
+    
+#     time_pool = []
+
+#     #current_process = array[i]  # items of array; item aesa hoga ['P4', 5 (bt), 3 (at)]
+#     for process in array: # this loop adds process which are in time range to time_pool
+#         if process[2] <= arrival_time:
+#             time_pool.append(process)
+#     print('time_pool',time_pool)
+
+#     for on_time_process in time_pool: # this loop runs the processes which are arrived
+        
+#         while on_time_process[1] != 0: # run karega jab tak burst time end nhi hojata
+#             print(on_time_process)
+#             on_time_process[1] -= 1
+#             arrival_time += 1
+
+#         print('----',arrival_time, on_time_process)
